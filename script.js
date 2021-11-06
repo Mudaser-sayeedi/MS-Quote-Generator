@@ -11,13 +11,13 @@ const loader = document.querySelector('#loader');
 //global variable
 let quotesList = [];
 
-// show loading
-const loading = () => {
+// show loading spinner
+const showLoadingSpinner = () => {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
-// hide loading
-const completed = () => {
+// hide loading spinner
+const hideLoadingSpinner = () => {
     loader.hidden = true;
     quoteContainer.hidden = false;
 }
@@ -25,7 +25,7 @@ const completed = () => {
 // show quotes function
 const showQuotes = () => {
     // start loading
-    loading();
+    showLoadingSpinner();
     const quoteNumber = Math.floor(Math.random() * quotesList.length);
     const quote = quotesList[quoteNumber];
 
@@ -48,13 +48,13 @@ const showQuotes = () => {
 
     quoteText.textContent = quote.text;
     // after setting quote stop loading
-    completed();
+    hideLoadingSpinner();
 }
 
 // geting quotes from api
 const getQuote = async () => {
     // first loading page
-    loading();
+    showLoadingSpinner();
     const apiUrl = 'https://type.fit/api/quotes';
     try {
         const res = await fetch(apiUrl);
@@ -63,6 +63,7 @@ const getQuote = async () => {
     } catch (error) {
         alert('Some Thing Went Wrong With The Api OR Your Connection is Losted! Try again Letter. THANKS');
         console.log(error);
+        getQuote();
     }
 }
 
