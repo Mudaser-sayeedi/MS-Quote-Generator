@@ -1,17 +1,31 @@
 // Dom manipulating
 const quoteContainer = document.querySelector('#quote-container');
 const quoteText = document.querySelector('#quote');
-const quoteAuthor = document.querySelector('#autor');
+const quoteAuthor = document.querySelector('#author');
 const newQuoteButton = document.querySelector('#new-qoute');
 const tweetButton = document.querySelector('#twitter');
 const qNo = document.querySelector('#qNo');
 const allQno = document.querySelector('#allQno');
+const loader = document.querySelector('#loader');
 
 //global variable
 let quotesList = [];
 
+// show loading
+const loading = () => {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+// hide loading
+const completed = () => {
+    loader.hidden = true;
+    quoteContainer.hidden = false;
+}
+
 // show quotes function
 const showQuotes = () => {
+    // start loading
+    loading();
     const quoteNumber = Math.floor(Math.random() * quotesList.length);
     const quote = quotesList[quoteNumber];
 
@@ -33,10 +47,14 @@ const showQuotes = () => {
     }
 
     quoteText.textContent = quote.text;
+    // after setting quote stop loading
+    completed();
 }
 
 // geting quotes from api
 const getQuote = async () => {
+    // first loading page
+    loading();
     const apiUrl = 'https://type.fit/api/quotes';
     try {
         const res = await fetch(apiUrl);
